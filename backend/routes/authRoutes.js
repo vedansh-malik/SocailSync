@@ -2,33 +2,27 @@
 const express = require('express');
 const router = express.Router();
 
-// import { createSchedule } from '../controllers/scheduleController.js';
 const protect = require('../middleware/authMiddleware');
 const { signup, login, postGenerate, submitAnswer } = require('../controllers/authControllers');
 
-// @route   POST /api/auth/signup
-// @desc    Register new user
+// Signup
 router.post('/signup', signup);
 
-// @route   POST /api/auth/login
-// @desc    Login user
+// Login
 router.post('/login', login);
 
-router.post('/questions', protect , submitAnswer);
+// Questionnaire
+router.post('/questions', protect, submitAnswer);
 
-router.post('/postgenerate', postGenerate);
+// Post generation (should also be protected so only logged-in users can generate posts)
+router.post('/postgenerate', protect, postGenerate);
 
-// router.post('/create', createSchedule);
-
-const protect = require('../middleware/authMiddleware');
-
-// Add this route at the end of your existing routes: just for temporary
+// Protected route for testing
 router.get('/protected', protect, (req, res) => {
     res.json({
         message: 'Access granted to protected route!',
         user: req.user
     });
 });
-
 
 module.exports = router;

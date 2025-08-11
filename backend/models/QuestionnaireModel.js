@@ -1,6 +1,11 @@
 const mongoose = require('mongoose');
 
 const questionnaireSchema = new mongoose.Schema({
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
+  },
   personal_intro: String,
   profession: String,
   content_focus: [String],

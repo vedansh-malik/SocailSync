@@ -740,7 +740,7 @@ const DemoPage = () => {
     );
   }
 
-  const { userData, content, generatedAt, engagement } = post;
+  const { userData ={}, content, generatedAt, engagement } = post;
 
   return (
     <div className="max-w-4xl mx-auto px-4 py-10">
@@ -748,7 +748,7 @@ const DemoPage = () => {
 
       <div className="mb-6 bg-white shadow rounded p-5">
         <h2 className="text-xl font-semibold mb-3">🔍 Profile Summary</h2>
-        <p><strong>👨‍💼 Profession:</strong> {userData.profession}</p>
+        <p><strong>👨‍💼 Profession:</strong> {userData.profession || 'N/A'}</p>
         <p><strong>🎯 Goal:</strong> {userData.goals}</p>
         <p><strong>🧑‍🤝‍🧑 Audience:</strong> {userData.audience}</p>
         <p><strong>🔥 Focus Areas:</strong> {userData.contentFocus?.join(', ')}</p>

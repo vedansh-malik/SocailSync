@@ -175,6 +175,29 @@ exports.postGenerate = async (req, res) => {
   Only return the post text.
   `;
       };
+
+      // Helper function to simulate engagement metrics
+const generateEngagementMetrics = (content, userData) => {
+  const hasHashtags = content.includes('#');
+  const hasQuestion = content.includes('?');
+  const hasEmoji = /[\u{1F600}-\u{1F6FF}]/u.test(content);
+
+  let likes = 100 + Math.floor(Math.random() * 100);
+  let comments = 10 + Math.floor(Math.random() * 20);
+  let shares = 5 + Math.floor(Math.random() * 10);
+
+  if (hasEmoji) likes *= 1.2;
+  if (hasHashtags) shares *= 1.2;
+  if (hasQuestion) comments *= 1.3;
+
+  return {
+    likes: Math.floor(likes),
+    comments: Math.floor(comments),
+    shares: Math.floor(shares),
+    views: Math.floor(likes * 10) // extra metric for your frontend
+  };
+};
+
   
       // 🌟 Gemini Call
       const prompt = buildPrompt(userData, style);
@@ -187,6 +210,7 @@ exports.postGenerate = async (req, res) => {
       res.json({
         success: true,
         data: {
+          userData,
           content,
           engagement,
           style,

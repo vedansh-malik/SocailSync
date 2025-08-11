@@ -48,8 +48,8 @@ const Login = () => {
             <input
               type="text"
               placeholder='Email or Username'
-              name="emailOrName"
-              value={formData.emailOrName}
+              name="emailOrUsername"
+              value={formData.emailOrUsername}
               onChange={handleChange}
               required
               className="w-full px-4 py-2 border rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -61,8 +61,8 @@ const Login = () => {
             <input
               type="password"
               placeholder='Password'
-              name="emailOrUsername"  // ✅ THIS
-              value={formData.emailOrUsername}  // ✅ THIS
+              name="password"  // ✅ THIS
+              value={formData.password}  // ✅ THIS
               onChange={handleChange}
               required
               className="w-full px-4 py-2 border rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500"
