@@ -35,7 +35,7 @@
 
 **Frontend:**
 - React.js with modern hooks
-- Responsive design with CSS3
+- Responsive design with Tailwind CSS
 - Clean and intuitive user interface
 
 **Backend:**
