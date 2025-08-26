@@ -9,11 +9,21 @@
   ![AI Powered](https://img.shields.io/badge/AI-Powered-orange.svg)
 </div>
 
+##  Screenshots
 
+### SociaSync Landing Page
 ![SociaSync Landing Page ](https://github.com/vedansh-malik/SocailSync/blob/694ea077e334b5a6db25cb5fb09856846dce93ba/Screenshot%202025-08-26%20145719.png)  
+
+### Light mode
 ![Light mode](https://github.com/vedansh-malik/SocailSync/blob/694ea077e334b5a6db25cb5fb09856846dce93ba/Screenshot%202025-08-26%20145745.png)
+
+### Login, Signup, Questionaire
 ![Login, Signup, Questionaire](https://github.com/vedansh-malik/SocailSync/blob/ed0f9061966a1034072ff6d032ef9c764496cf4c/ss%20of%20page.png)
+
+### LinkedIn OAuth, Generating post, linkeiIn connected
 ![LinkedIn OAuth, Generating post, linkeiIn connected](https://github.com/vedansh-malik/SocailSync/blob/ed0f9061966a1034072ff6d032ef9c764496cf4c/ss%20Linkedin%20auth.png)
+
+### Post to upload
 ![Post to upload](https://github.com/vedansh-malik/SocailSync/blob/ed0f9061966a1034072ff6d032ef9c764496cf4c/Screenshot%202025-08-26%20151027.png)
 
 ##  Features
