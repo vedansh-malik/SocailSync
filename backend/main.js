@@ -18,7 +18,7 @@ app.use(helmet());
 
 // CORS middleware - set properly
 app.use(cors({
-  origin: 'http://localhost:5174',
+  origin: 'http://localhost:5173',
   credentials: true,
 }));
 

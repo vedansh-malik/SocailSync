@@ -50,7 +50,7 @@ const Signup = () => {
           name="username"
           value={formData.username}
           onChange={handleChange}
-          placeholder="John Doe"
+          placeholder="Mark Zuckerberg"
           className="w-full px-4 py-2 rounded-lg border border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-700 text-zinc-900 dark:text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
       </div>
@@ -62,7 +62,7 @@ const Signup = () => {
           name="email"
           value={formData.email}
           onChange={handleChange}
-          placeholder="you@example.com"
+          placeholder="mark@gmail.com"
           className="w-full px-4 py-2 rounded-lg border border-zinc-300 dark:border-zinc-600 bg-white dark:bg-zinc-700 text-zinc-900 dark:text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
       </div>

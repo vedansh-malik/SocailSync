@@ -199,14 +199,14 @@ const generateEngagementMetrics = (content, userData) => {
 };
 
   
-      // 🌟 Gemini Call
+      //  Gemini Call
       const prompt = buildPrompt(userData, style);
       const content = await generateWithGemini(prompt);
   
-      // 📈 Engagement Simulation
+      //  Engagement Simulation
       const engagement = generateEngagementMetrics(content, userData);
   
-      // ✅ Response
+      //  Response
       res.json({
         success: true,
         data: {
@@ -223,6 +223,307 @@ const generateEngagementMetrics = (content, userData) => {
       res.status(500).json({ success: false, message: error.message });
     }
   };
+ 
+  // Linkedin Authentication
+
+//   const CLIENT_ID = process.env.LINKEDIN_CLIENT_ID;
+//   const CLIENT_SECRET = process.env.LINKEDIN_CLIENT_SECRET;
+//   const REDIRECT_URI = "http://localhost:5000/api/auth/linkedin/callback"; // backend redirect
+
+// // Step 1: Redirect user to LinkedIn OAuth
+// exports.loginWithLinkedIn = (req, res) => {
+//   const scope = "openid profile email w_member_social"; 
+//   //const state = "randomstring123"; // Better to generate securely
+//   const state = req.query.token; // store token in state
+//   const authURL = `https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(
+//     REDIRECT_URI
+//   )}&scope=${encodeURIComponent(scope)}&state=${state}`;
+
+//   res.redirect(authURL);
+// };
+
+// // Step 2: Handle LinkedIn callback
+// exports.linkedinCallback = async (req, res) => {
+//   const code = req.query.code;
+//   const state = req.query.state;
+
+
+//   try {
+//     // Decode the JWT from state
+//     const decoded = jwt.verify(state, process.env.JWT_SECRET);
+//     const userId = decoded.id;
+
+//     // Exchange code for access token
+//     const tokenRes = await axios.post(
+//       "https://www.linkedin.com/oauth/v2/accessToken",
+//       null,
+//       {
+//         params: {
+//           grant_type: "authorization_code",
+//           code,
+//           redirect_uri: REDIRECT_URI,
+//           client_id: CLIENT_ID,
+//           client_secret: CLIENT_SECRET,
+//         },
+//         headers: { "Content-Type": "application/x-www-form-urlencoded" },
+//       }
+//     );
+
+//     const accessToken = tokenRes.data.access_token;
+
+//     // Get user profile from LinkedIn
+//     const profileRes = await axios.get("https://api.linkedin.com/v2/userinfo", {
+//       headers: { Authorization: `Bearer ${accessToken}` },
+//     });
+
+//     const linkedinProfile = profileRes.data;
+
+//     // Find user in DB (assuming you already logged in your user)
+//     // const userId = req.user?._id; // <- make sure req.user is available (auth middleware)
+//     // if (!userId) {
+//     //   return res.status(401).json({ message: "User not logged in" });
+//     // }
+
+//     // Save LinkedIn token to user model
+//     await User.findByIdAndUpdate(userId, {
+//       linkedinId: linkedinProfile.sub,
+//       linkedinAccessToken: accessToken,
+//     });
+
+//     // Redirect back to frontend
+//     res.redirect("http://localhost:3000/demo?linkedin=connected");
+//   } catch (err) {
+//     console.error("LinkedIn OAuth error:", err.response?.data || err.message);
+//     res.status(500).json({ error: "LinkedIn authentication failed" });
+//   }
+// };
+
+// // Step 3: Post to LinkedIn on behalf of user
+// exports.postToLinkedIn = async (req, res) => {
+//   const { text } = req.body;
+//   const userId = req.user._id;
+
+//   try {
+//     const user = await User.findById(userId);
+//     if (!user || !user.linkedinAccessToken) {
+//       return res.status(400).json({ error: "LinkedIn not connected" });
+//     }
+
+//     // Get LinkedIn profile ID
+//     const profileRes = await axios.get("https://api.linkedin.com/v2/me", {
+//       headers: { Authorization: `Bearer ${user.linkedinAccessToken}` },
+//     });
+
+//     const profileId = profileRes.data.id;
+
+//     // Create LinkedIn post
+//     const postRes = await axios.post(
+//       "https://api.linkedin.com/v2/ugcPosts",
+//       {
+//         author: `urn:li:person:${profileId}`,
+//         lifecycleState: "PUBLISHED",
+//         specificContent: {
+//           "com.linkedin.ugc.ShareContent": {
+//             shareCommentary: { text },
+//             shareMediaCategory: "NONE",
+//           },
+//         },
+//         visibility: { "com.linkedin.ugc.MemberNetworkVisibility": "PUBLIC" },
+//       },
+//       {
+//         headers: {
+//           Authorization: `Bearer ${user.linkedinAccessToken}`,
+//           "Content-Type": "application/json",
+//           "X-Restli-Protocol-Version": "2.0.0",
+//         },
+//       }
+//     );
+
+//     res.json({ success: true, postUrl: postRes.data });
+//   } catch (err) {
+//     console.error("Error posting to LinkedIn:", err.response?.data || err.message);
+//     res.status(500).json({ error: "Failed to post on LinkedIn" });
+//   }
+// };
+
+
+const CLIENT_ID = process.env.LINKEDIN_CLIENT_ID;
+const CLIENT_SECRET = process.env.LINKEDIN_CLIENT_SECRET;
+const REDIRECT_URI = "http://localhost:5000/api/auth/linkedin/callback"; // backend redirect
+
+// Step 1: Redirect user to LinkedIn OAuth
+exports.loginWithLinkedIn = (req, res) => {
+  const scope = "openid profile email w_member_social ";
+  const state = req.query.token; // store token in state (⚠️ ensure it's short-lived)
+  const authURL = `https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=${CLIENT_ID}&redirect_uri=${encodeURIComponent(
+    REDIRECT_URI
+  )}&scope=${encodeURIComponent(scope)}&state=${state}`;
+
+  res.redirect(authURL);
+};
+
+// Step 2: Handle LinkedIn callback
+exports.linkedinCallback = async (req, res) => {
+  const code = req.query.code;
+  const state = req.query.state;
+
+  try {
+    // Decode the JWT from state
+    let decoded;
+    try {
+      decoded = jwt.verify(state, process.env.JWT_SECRET);
+    } catch (err) {
+      return res.status(400).json({ error: "Invalid or expired session token" });
+    }
+
+    const userId = decoded.id;
+
+    // Exchange code for access token
+    const tokenRes = await axios.post(
+      "https://www.linkedin.com/oauth/v2/accessToken",
+      null,
+      {
+        params: {
+          grant_type: "authorization_code",
+          code,
+          redirect_uri: REDIRECT_URI,
+          client_id: CLIENT_ID,
+          client_secret: CLIENT_SECRET,
+        },
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      }
+    );
+
+    const accessToken = tokenRes.data.access_token;
+    const idToken = tokenRes.data.id_token; // ✅ comes with OIDC
+
+    // Decode ID token to get user profile + email
+    const oidcProfile = jwt.decode(idToken);
+
+    const linkedinProfile = {
+      sub: oidcProfile.sub, // unique LinkedIn user ID
+      name: oidcProfile.name,
+      email: oidcProfile.email,
+      picture: oidcProfile.picture,
+    };
+
+    // ✅ Use /me instead of /userinfo for consistency
+    // const profileRes = await axios.get(
+    //   "https://api.linkedin.com/v2/me?projection=(id,localizedFirstName,localizedLastName)",
+    //   { headers: { Authorization: `Bearer ${accessToken}` } }
+    // );
+
+    // const emailRes = await axios.get(
+    //   "https://api.linkedin.com/v2/emailAddress?q=members&projection=(elements*(handle~))",
+    //   { headers: { Authorization: `Bearer ${accessToken}` } }
+    // );
+
+    // const linkedinProfile = {
+    //   id: profileRes.data.id,
+    //   firstName: profileRes.data.localizedFirstName,
+    //   lastName: profileRes.data.localizedLastName,
+    //   email: emailRes.data.elements[0]["handle~"].emailAddress,
+    // };
+
+    console.log("OIDC Profile:", oidcProfile);
+
+    // Save LinkedIn token to user model
+    await User.findByIdAndUpdate(userId, {
+      linkedinSub: linkedinProfile.sub,
+      linkedinAccessToken: accessToken,
+      linkedinName: linkedinProfile.name,
+      linkedinEmail: linkedinProfile.email,
+      linkedinPicture: linkedinProfile.picture
+    });
+
+    // Redirect back to frontend
+    res.redirect("http://localhost:5173/demo?linkedin=connected");
+  } catch (err) {
+    console.error("LinkedIn OAuth error:", err.response?.data || err.message);
+    res.status(500).json({ error: "LinkedIn authentication failed" });
+  }
+};
+
+// Step 3: Post to LinkedIn on behalf of user
+exports.postToLinkedIn = async (req, res) => {
+  const { content } = req.body;
+  const userId = req.user._id;
+
+  try {
+    const user = await User.findById(userId);
+    if (!user || !user.linkedinAccessToken || !user.linkedinSub) {
+      return res.status(400).json({ error: "LinkedIn not connected" });
+    }
+
+    // Get LinkedIn profile ID
+    // const profileRes = await axios.get("https://api.linkedin.com/v2/me", {
+    //   headers: { Authorization: `Bearer ${user.linkedinAccessToken}` },
+    // });
+
+    // const profileId = profileRes.data.id;
+    const profileId = user.linkedinSub;
+
+    // Build LinkedIn post payload
+    const payload = {
+      author: `urn:li:person:${profileId}`,
+      lifecycleState: "PUBLISHED",
+      specificContent: {
+        "com.linkedin.ugc.ShareContent": {
+          shareCommentary: {
+            text: content,
+          },
+          shareMediaCategory: "NONE",
+        },
+      },
+      visibility: {
+        "com.linkedin.ugc.MemberNetworkVisibility": "PUBLIC",
+      },
+    };
+
+    console.log("LinkedIn post payload:", payload);
+
+    // Create LinkedIn post
+    // const postRes = await axios.post(
+    //   "https://api.linkedin.com/v2/ugcPosts",
+    //   {
+    //     author: `urn:li:person:${profileId}`,
+    //     lifecycleState: "PUBLISHED",
+    //     specificContent: {
+    //       "com.linkedin.ugc.ShareContent": {
+    //         shareCommentary: { text: content },
+    //         shareMediaCategory: "NONE",
+    //       },
+    //     },
+    //     visibility: { "com.linkedin.ugc.MemberNetworkVisibility": "PUBLIC" },
+    //   },
+    //   {
+    //     headers: {
+    //       Authorization: `Bearer ${user.linkedinAccessToken}`,
+    //       "Content-Type": "application/json",
+    //       "X-Restli-Protocol-Version": "2.0.0",
+    //     },
+    //   }
+    // );
+
+    const postRes = await axios.post(
+      "https://api.linkedin.com/v2/ugcPosts",
+      payload,
+      {
+        headers: {
+          Authorization: `Bearer ${user.linkedinAccessToken}`,
+          "Content-Type": "application/json",
+          "X-Restli-Protocol-Version": "2.0.0",
+        },
+      }
+    );
+
+    res.json({ success: true, postUrl: postRes.data });
+  } catch (err) {
+    console.error("Error posting to LinkedIn:", err.response?.data || err.message);
+    res.status(500).json({ error: "Failed to post on LinkedIn", details: err.response?.data || err.message });
+  }
+};
+
   
 
 // exports.postGenerate =  (protect, async (req, res) => {

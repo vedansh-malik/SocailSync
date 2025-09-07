@@ -693,6 +693,8 @@ const DemoPage = () => {
   const [copied, setCopied] = useState(false);
   const [error, setError] = useState('');
   const [style, setStyle] = useState('professional'); // default style
+  const [isLinkedInConnected, setIsLinkedInConnected] = useState(false);
+
 
   const fetchGeneratedPost = async () => {
     setIsGenerating(true);
@@ -724,6 +726,47 @@ const DemoPage = () => {
       }
     }
   };
+
+  const handleLinkedInConnect = async () => {
+    try {
+      // hit your backend login route
+      // window.location.href = "http://localhost:5000/api/auth/linkedin";  <-- here was the problem
+      // frontend
+      const token = localStorage.getItem("token");
+      if(!token) {
+        alert("Please log in first!");
+        console.log("token not found");
+        return;
+      }
+      window.location.href = `http://localhost:5000/api/auth/linkedin?token=${token}`;
+    } catch (err) {
+      console.error("LinkedIn connect failed:", err);
+    }
+  };
+
+  const handleLinkedInPost = async () => {
+    try {
+      const response = await axios.post('/auth/linkedin/post', {
+        content: post.content
+      });
+  
+      if (response.data.success) {
+        alert("✅ Post published on LinkedIn!");
+      } else {
+        alert("❌ Failed to post on LinkedIn.");
+      }
+    } catch (err) {
+      console.error("Post to LinkedIn failed:", err);
+      alert("❌ Error while posting on LinkedIn.");
+    }
+  };
+  
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get("linkedin") === "connected") {
+      setIsLinkedInConnected(true);
+    }
+  }, []);
 
   useEffect(() => {
     fetchGeneratedPost();
@@ -777,6 +820,13 @@ const DemoPage = () => {
           {copied ? <Check className="w-4 h-4 text-green-500" /> : <Copy className="w-4 h-4" />}
           {copied ? 'Copied!' : 'Copy'}
         </button>
+
+        <button
+        onClick={isLinkedInConnected ? handleLinkedInPost : handleLinkedInConnect}
+        className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition">
+        {isLinkedInConnected ? "Post on LinkedIn ↗" : "Connect to LinkedIn"}
+        </button>
+
       </div>
 
       {error && <p className="text-red-500 mt-4">{error}</p>}
