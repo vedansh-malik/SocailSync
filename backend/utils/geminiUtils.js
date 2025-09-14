@@ -1,7 +1,7 @@
 // utils/geminiUtils.js
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY); // ✅ Ensure you have .env file
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY); 
 
 async function generateWithGemini(prompt) {
   try {
