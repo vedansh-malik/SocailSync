@@ -18,7 +18,7 @@ app.use(helmet());
 
 // CORS middleware - set properly
 app.use(cors({
-  origin: process.env.BACKEND_URL,
+  origin: process.env.FRONTEND_URL,
   credentials: true,
 }));
 
