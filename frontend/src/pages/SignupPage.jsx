@@ -27,7 +27,7 @@ const Signup = () => {
     }
 
     try {
-      const res = await axios.post(`${process.env.BACKEND_URL}/auth/signup`, formData);
+      const res = await axios.post('/auth/signup', formData);
       alert('Signup successful!');
       navigate('/login');
     } catch (err) {
