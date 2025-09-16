@@ -23,6 +23,9 @@
 // src/utils/axiosInstance.js
 import axios from 'axios';
 
+console.log("✅ Custom axios instance loaded");
+
+
 const instance = axios.create({
   baseURL: 'https://socailsync.onrender.com/api',
   withCredentials: true,
