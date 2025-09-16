@@ -27,7 +27,7 @@ const Signup = () => {
     }
 
     try {
-      const res = await axios.post('/auth/signup', formData);
+      const res = await axios.post('https://socailsync.onrender.com/api/auth/signup', formData);
       alert('Signup successful!');
       navigate('/login');
     } catch (err) {
