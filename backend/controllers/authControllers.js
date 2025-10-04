@@ -350,7 +350,7 @@ const generateEngagementMetrics = (content, userData) => {
 const CLIENT_ID = process.env.LINKEDIN_CLIENT_ID;
 const CLIENT_SECRET = process.env.LINKEDIN_CLIENT_SECRET;
 const REDIRECT_URI = "http://localhost:5000/api/auth/linkedin/callback"; // backend redirect
-
+  
 // Step 1: Redirect user to LinkedIn OAuth
 exports.loginWithLinkedIn = (req, res) => {
   const scope = "openid profile email w_member_social ";

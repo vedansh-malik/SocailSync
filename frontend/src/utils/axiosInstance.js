@@ -23,19 +23,16 @@
 // src/utils/axiosInstance.js
 import axios from 'axios';
 
-console.log("✅ Custom axios instance loaded");
-
-
-const instance = axios.create({
-  baseURL: 'https://socailsync.onrender.com/api',
+const axiosInstance = axios.create({
+  baseURL: 'http://localhost:5000/api', // adjust if no /api prefix
   withCredentials: true,
   headers: {
-    'Content-Type': 'application/json'
-  }
+    'Content-Type': 'application/json',
+  },
 });
 
 // 🔐 Attach token dynamically
-instance.interceptors.request.use((config) => {
+axiosInstance.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
   if (token) {
     config.headers['Authorization'] = `Bearer ${token}`;
@@ -43,4 +40,4 @@ instance.interceptors.request.use((config) => {
   return config;
 });
 
-export default instance;
+export default axiosInstance;

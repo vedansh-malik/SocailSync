@@ -26,11 +26,9 @@ const Signup = () => {
       return;
     }
 
-    console.log('📌 Signup function triggered');
-    console.log('📌 Form data:', formData);
 
     try {
-      const res = await axios.post('https://socailsync.onrender.com/api/auth/signup', formData);
+      const res = await axios.post('/auth/signup', formData);
       console.log('✅ API Response:', res.data);
       
       alert('Signup successful!');
