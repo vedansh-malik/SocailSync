@@ -24,7 +24,7 @@
 import axios from 'axios';
 
 const axiosInstance = axios.create({
-  baseURL: 'http://localhost:5000/api', // adjust if no /api prefix
+  baseURL: 'https://socailsync.onrender.com/api', // adjust if no /api prefix
   withCredentials: true,
   headers: {
     'Content-Type': 'application/json',
