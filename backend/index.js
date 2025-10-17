@@ -17,10 +17,19 @@ connectDB();
 app.use(helmet());
 
 // CORS middleware - set properly
+// app.use(cors({
+//   origin: process.env.FRONTEND_URL,
+//   credentials: true,
+// }));
+
+// star method to allow all the websites to hit the backend
 app.use(cors({
-  origin: process.env.FRONTEND_URL,
-  credentials: true,
+  origin: '*',       // Allow all origins
+  methods: '*',      // Allow all HTTP methods (GET, POST, PUT, DELETE, etc.)
+  allowedHeaders: '*' // Allow all headers
 }));
+
+
 
 // Body parsers (very important)
 app.use(express.json()); // handles JSON payloads
