@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-import { useTheme } from '../ThemeContext' // 💡 Import theme context
+import { useTheme } from '../ThemeContext' // Import theme context
 import PulseButton from "../components/PulseButton";
 import PulseBeamsButton from '../components/PulseButton';
 import HeroSection from '../components/HeroSection';
@@ -56,21 +56,21 @@ const LandingPage = () => {
       {/* Features Section */}
       <section className="grid md:grid-cols-3 gap-6 mt-24 px-10 text-center">
         <div className="p-6 shadow-lg rounded-xl bg-gray-50 dark:bg-gray-800">
-          <h3 className="text-xl font-semibold mb-2">🎯 Personalized AI Posts</h3>
+          <h3 className="text-xl font-semibold mb-2"> Personalized AI Posts</h3>
           <p>
             Create content in your unique voice using AI trained on your
             preferences.
           </p>
         </div>
         <div className="p-6 shadow-lg rounded-xl bg-gray-50 dark:bg-gray-800">
-          <h3 className="text-xl font-semibold mb-2">🕒 Scheduled Auto Posting</h3>
+          <h3 className="text-xl font-semibold mb-2"> Scheduled Auto Posting</h3>
           <p>
             Choose your post time and let our system post daily, weekly or
             custom.
           </p>
         </div>
         <div className="p-6 shadow-lg rounded-xl bg-gray-50 dark:bg-gray-800">
-          <h3 className="text-xl font-semibold mb-2">📊 Dashboard Analytics</h3>
+          <h3 className="text-xl font-semibold mb-2"> Dashboard Analytics</h3>
           <p>
             Track impressions, engagement, growth and reach — all in one place.
           </p>
