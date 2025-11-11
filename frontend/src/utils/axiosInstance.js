@@ -1,30 +1,7 @@
-// // src/utils/axiosInstance.js
-// import axios from "axios";
-
-// const axiosInstance = axios.create({
-//   baseURL: "http://localhost:5000/api", // Make sure this matches your backend port
-//   withCredentials: true,
-// });
-
-// export default axiosInstance;
-
-// import axios from 'axios';
-
-// const instance = axios.create({
-//   baseURL: 'http://localhost:5000/api',
-//   withCredentials: true, // 🔥 Required for CORS
-//   headers: {
-//     'Content-Type': 'application/json'
-//   }
-// });
-
-// export default instance;
-
-// src/utils/axiosInstance.js
 import axios from 'axios';
 
 const axiosInstance = axios.create({
-  baseURL: 'https://socailsync.onrender.com/api', // adjust if no /api prefix
+  baseURL: 'https://socailsync.onrender.com/api', 
   withCredentials: true,
   headers: {
     'Content-Type': 'application/json',
